@@ -10,14 +10,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class ProductDB implements DatabaseConnection<Product> {
+public class ProductDB {
     private final SessionFactory sessionFactory;
 
     public ProductDB() {
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
-    @Override
     public List<Product> findAll() {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
@@ -31,7 +30,6 @@ public class ProductDB implements DatabaseConnection<Product> {
         }
     }
 
-    @Override
     public Optional<Product> findById(Long id) {
         Optional<Product> optionalProduct;
         try (Session session = sessionFactory.openSession()) {
@@ -46,7 +44,6 @@ public class ProductDB implements DatabaseConnection<Product> {
         }
     }
 
-    @Override
     public boolean save(Product product) {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
@@ -58,7 +55,6 @@ public class ProductDB implements DatabaseConnection<Product> {
         }
     }
 
-    @Override
     public boolean delete(Product product) {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
@@ -70,7 +66,6 @@ public class ProductDB implements DatabaseConnection<Product> {
         }
     }
 
-    @Override
     public boolean update(Product product) {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
