@@ -31,6 +31,7 @@
             <th>Наименование</th>
             <th>Стоимость</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -40,6 +41,9 @@
             <td th:text="${p.cost}"></td>
             <td>
                 <a class="btn btn-outline-danger" th:href="@{/delete/{id}(id=${p.id})}">Delete</a>
+            <td>
+                <a class="btn btn-outline-info" th:href="@{/update/{id}(id=${p.id})}">Update</a>
+            </td>
             </td>
         </tr>
         </tbody>

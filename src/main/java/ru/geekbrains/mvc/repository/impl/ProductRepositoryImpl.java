@@ -1,59 +1,47 @@
 package ru.geekbrains.mvc.repository.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ru.geekbrains.mvc.dao.DatabaseConnection;
 import ru.geekbrains.mvc.domain.Product;
 import ru.geekbrains.mvc.repository.ProductRepository;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
-    private final List<Product> products;
 
-    public ProductRepositoryImpl() {
-        this.products = new ArrayList<>();
-    }
+    private final DatabaseConnection<Product> databaseConnection;
 
-    @PostConstruct
-    private void init() {
-        save(new Product("test1", 223));
-        save(new Product("test2", 2223));
-        save(new Product("test3", 23423));
-        save(new Product("test4", 234223));
+    @Autowired
+    public ProductRepositoryImpl(DatabaseConnection<Product> databaseConnection) {
+        this.databaseConnection = databaseConnection;
     }
 
     @Override
     public List<Product> findAll() {
-        return products;
+        return databaseConnection.findAll();
     }
 
     @Override
-    public Optional<Product> findProductById(int id) {
-        for (Product product : products) {
-            if (product.getId() == id) {
-                return Optional.of(product);
-            }
-        }
-        return Optional.empty();
+    public Optional<Product> findProductById(Long id) {
+        return databaseConnection.findById(id);
     }
 
     @Override
     public boolean save(Product product) {
-        if(products.isEmpty()) {
-            product.setId(1);
-            return products.add(product);
-        }
-
-        int id = products.get(products.size() - 1).getId() + 1;
-        product.setId(id);
-        return products.add(product);
+        return databaseConnection.save(product);
     }
 
     @Override
-    public boolean deleteProduct(int id) {
-        return products.removeIf(p -> p.getId() == id);
+    public boolean deleteProduct(Long id) {
+        Optional<Product> product = findProductById(id);
+        return product.filter(databaseConnection::delete).isPresent();
+    }
+
+    @Override
+    public boolean updateProduct(Product product) {
+        return databaseConnection.update(product);
     }
 }

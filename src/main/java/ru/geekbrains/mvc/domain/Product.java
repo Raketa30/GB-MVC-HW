@@ -1,26 +1,34 @@
 package ru.geekbrains.mvc.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "product")
 public class Product {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "title")
     private String title;
-    private int cost;
 
-    public Product(String title, int cost) {
+    @Column(name = "cost")
+    private Integer cost;
+
+    public Product() {
+    }
+
+    public Product(String title, Integer cost) {
         this.title = title;
         this.cost = cost;
     }
 
-    public Product(int id, String title, int cost) {
-        this.id = id;
-        this.title = title;
-        this.cost = cost;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -32,11 +40,11 @@ public class Product {
         this.title = title;
     }
 
-    public int getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 }
