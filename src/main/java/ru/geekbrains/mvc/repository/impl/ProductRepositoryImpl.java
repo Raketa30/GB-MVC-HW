@@ -2,7 +2,7 @@ package ru.geekbrains.mvc.repository.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.geekbrains.mvc.dao.DatabaseConnection;
+import ru.geekbrains.mvc.dao.ProductDB;
 import ru.geekbrains.mvc.domain.Product;
 import ru.geekbrains.mvc.repository.ProductRepository;
 
@@ -12,10 +12,10 @@ import java.util.Optional;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final DatabaseConnection<Product> databaseConnection;
+    private final ProductDB databaseConnection;
 
     @Autowired
-    public ProductRepositoryImpl(DatabaseConnection<Product> databaseConnection) {
+    public ProductRepositoryImpl(ProductDB databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
 
