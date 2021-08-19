@@ -47,7 +47,7 @@ public class ProductDB {
     public boolean save(Product product) {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
-            session.get(Product.class, 2L);
+            session.get(Product.class, 1L);
             tx = session.beginTransaction();
             session.save(product);
             tx.commit();
@@ -58,7 +58,7 @@ public class ProductDB {
     public boolean delete(Product product) {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
-            session.get(Product.class, 3L);
+            session.get(Product.class, 1L);
             tx = session.beginTransaction();
             session.delete(product);
             tx.commit();
@@ -69,7 +69,7 @@ public class ProductDB {
     public boolean update(Product product) {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
-            session.get(Product.class, 4L);
+            session.get(Product.class, 1L);
             tx = session.beginTransaction();
             session.update(product);
             tx.commit();
