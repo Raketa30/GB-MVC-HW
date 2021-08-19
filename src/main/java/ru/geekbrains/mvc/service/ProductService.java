@@ -8,9 +8,11 @@ import java.util.Optional;
 public interface ProductService {
     List<Product> findAll();
 
-    Optional<Product> findProductById(int id);
+    Optional<Product> findProductById(Long id);
 
     boolean addProduct(Product product);
 
-    boolean deleteProduct(int id);
+    boolean deleteProduct(Long id);
+
+    boolean updateProduct(Long id, Product product);
 }

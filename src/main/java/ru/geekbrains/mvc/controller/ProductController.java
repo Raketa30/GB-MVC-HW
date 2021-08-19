@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.mvc.domain.Product;
 import ru.geekbrains.mvc.service.ProductService;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -27,22 +30,37 @@ public class ProductController {
     @GetMapping("/products")
     public String showProductsPage(Model model) {
         List<Product> products = productService.findAll();
+        Collections.sort(products, Comparator.comparingLong(Product::getId));
         model.addAttribute("products", products);
         return "products";
     }
 
     @PostMapping("/add")
-    public String addProduct(@RequestParam(value = "title") String title, @RequestParam(value = "cost") String cost) {
-        Product product = new Product(title, Integer.parseInt(cost));
+    public String addProduct(@ModelAttribute Product product) {
         productService.addProduct(product);
         return "redirect:/products";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Integer id) {
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/products";
     }
 
+    @GetMapping("/update/{id}")
+    public String showUpdateProductPage(@PathVariable Long id, Model model) {
+        Optional<Product> productById = productService.findProductById(id);
+        if(productById.isPresent()) {
+            model.addAttribute("product", productById.get());
+            return "product_update";
+        }
+        return "redirect:/products";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateProduct(@PathVariable Long id, @ModelAttribute Product product) {
+        productService.updateProduct(id, product);
+        return "redirect:/products";
+    }
 
 }

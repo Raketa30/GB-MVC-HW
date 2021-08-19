@@ -9,9 +9,11 @@ public interface ProductRepository {
 
     List<Product> findAll();
 
-    Optional<Product> findProductById(int id);
+    Optional<Product> findProductById(Long id);
 
     boolean save(Product product);
 
-    boolean deleteProduct(int id);
+    boolean deleteProduct(Long id);
+
+    boolean updateProduct(Product product);
 }

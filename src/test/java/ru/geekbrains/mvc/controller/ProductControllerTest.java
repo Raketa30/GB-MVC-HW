@@ -27,7 +27,7 @@ class ProductControllerTest extends MvcApplicationTests {
 
     @BeforeEach
     void setUp() {
-        Product product = new Product(1, "test", 123);
+        Product product = new Product("test", 123);
         when(productService.findAll())
                 .thenReturn(Collections.singletonList(product));
     }
@@ -44,7 +44,7 @@ class ProductControllerTest extends MvcApplicationTests {
     @Test
     @DisplayName("<-test add new product ->")
     void addNewProductShouldCreateNewProductInTheDatabase() {
-        Product product = new Product(2, "test2", 123);
+        Product product = new Product("test2", 123);
         when(productService.addProduct(product))
                 .thenReturn(true);
     }

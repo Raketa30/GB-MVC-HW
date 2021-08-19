@@ -7,7 +7,8 @@
     <property name="connection.url">jdbc:postgresql://localhost:5432/simple-app</property>
     <property name="connection.username">postgres</property>
     <property name="connection.password">postgrespass</property>
-    <property name="default_schema">simple-app</property>
+    <property name="connection.pool_size">8</property>
+    <property name="default_schema">public</property>
     <property name="current_session_context_class">thread</property>
     <property name="show_sql">true</property>
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
