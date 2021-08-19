@@ -1,7 +1,5 @@
 package ru.geekbrains.mvc.domain;
 
-import org.springframework.format.annotation.NumberFormat;
-
 public class Product {
     private int id;
     private String title;
