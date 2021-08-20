@@ -63,4 +63,16 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @GetMapping("/findById")
+    public String filterById(@RequestParam String id, Model model) {
+        Optional<Product> productById = productService.findProductById(Long.parseLong(id));
+        if (productById.isPresent()) {
+            model.addAttribute("products", Collections.singletonList(productById.get()));
+        } else {
+            model.addAttribute("products", Collections.emptyList());
+        }
+        return "products";
+    }
+
+
 }
