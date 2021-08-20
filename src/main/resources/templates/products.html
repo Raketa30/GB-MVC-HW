@@ -9,21 +9,37 @@
 <body>
 <div class="container m-4 p-4">
     <h2>Продукты</h2>
-    <div>
-        <form th:action="@{/add}" method="post" class="mt-2 mb-2">
-            <div class="row">
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Имя" th:name="title">
+    <div class="row">
+        <div class="col-md-8">
+            <form class="mt-2 mb-2" method="post" th:action="@{/add}">
+                <div class="row">
+                    <div class="col-md-5">
+                        <input class="form-control" placeholder="Имя" th:name="title" type="text">
+                    </div>
+                    <div class="col-md-5">
+                        <input class="form-control" maxlength="5" placeholder="Цена" th:name="cost" type="number">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary" type="submit">Добавить</button>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <input type="number" class="form-control" placeholder="Цена"  th:name="cost">
+            </form>
+        </div>
+        <div class="col-md-4">
+            <form class="mt-2 mb-2" method="get" th:action="@{/findById}">
+                <div class="row">
+                    <div class="col-md-8">
+                        <input class="form-control" placeholder="Введите Id" th:name="id" type="text">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-info" type="submit">Поиск</button>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary">Добавить</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
+
+
     <table class="table">
         <thead class="table-info">
         <tr>

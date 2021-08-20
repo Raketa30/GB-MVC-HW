@@ -1,10 +1,9 @@
-package ru.geekbrains.mvc.repository.impl;
+package ru.geekbrains.mvc.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.geekbrains.mvc.dao.ProductDB;
 import ru.geekbrains.mvc.domain.Product;
-import ru.geekbrains.mvc.repository.ProductRepository;
 
 import java.util.List;
 import java.util.Optional;
