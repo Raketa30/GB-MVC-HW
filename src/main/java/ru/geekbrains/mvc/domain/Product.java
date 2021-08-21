@@ -3,7 +3,7 @@ package ru.geekbrains.mvc.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product")
+@Table(name = "product", schema = "public")
 public class Product {
 
     @Id
