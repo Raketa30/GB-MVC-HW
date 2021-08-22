@@ -5,7 +5,3 @@ CREATE TABLE IF NOT EXISTS product
     title text               not null,
     cost  integer            not null
 );
-
-insert into product(id, title, cost)
-values (10, 'test1', 23),
-       (11, 'test2', 32);
