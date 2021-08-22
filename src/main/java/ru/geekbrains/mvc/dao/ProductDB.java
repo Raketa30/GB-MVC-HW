@@ -21,7 +21,7 @@ public class ProductDB {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            List<Product> all = session.createQuery("SELECT p FROM Product p").getResultList();
+            List<Product> all = session.createQuery("SELECT p FROM Product p", Product.class).getResultList();
             tx.commit();
             return all;
         } catch (Exception e) {
@@ -33,7 +33,7 @@ public class ProductDB {
     public Optional<Product> findById(Long id) {
         Optional<Product> optionalProduct;
         try (Session session = sessionFactory.openSession()) {
-            session.get(Product.class, 2L);
+            session.get(Product.class, id);
 
             Query query = session.createQuery("from Product as p where p.id = :id");
             query.setParameter("id", id);
