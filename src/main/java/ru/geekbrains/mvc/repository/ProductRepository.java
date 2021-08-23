@@ -16,4 +16,6 @@ public interface ProductRepository {
     boolean deleteProduct(Long id);
 
     boolean updateProduct(Product product);
+
+    List<Product> findProductsByCategoryId(Long id);
 }

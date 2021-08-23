@@ -26,12 +26,17 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public Optional<Category> findCategoryById(Long id) {
-        return Optional.empty();
+        return repository.findCategoryById(id);
     }
 
     @Override
-    public Category addCategory(Category category) {
-        return null;
+    public boolean addCategory(String title) {
+        Optional<Category> optionalCategory = repository.findCategoryByTitle(title);
+        if (optionalCategory.isEmpty()) {
+            repository.save(new Category(title));
+            return true;
+        }
+        return false;
     }
 
     @Override

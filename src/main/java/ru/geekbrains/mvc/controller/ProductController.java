@@ -9,10 +9,7 @@ import ru.geekbrains.mvc.domain.Product;
 import ru.geekbrains.mvc.service.CategoryService;
 import ru.geekbrains.mvc.service.ProductService;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -44,10 +41,13 @@ public class ProductController {
     @PostMapping("/add")
     public String addProduct(@RequestParam String title,
                              @RequestParam String cost,
-                             @RequestParam String category) {
-        Product product = new Product(title, Integer.parseInt(cost));
-        product.setCategory(new Category(category));
-        productService.addProduct(product);
+                             @RequestParam Long categoryId) {
+        Optional<Category> category = categoryService.findCategoryById(categoryId);
+        if (category.isPresent()) {
+            Product product = new Product(title, Integer.parseInt(cost));
+            product.setCategory(category.get());
+            productService.addProduct(product);
+        }
         return "redirect:/products";
     }
 
@@ -60,7 +60,7 @@ public class ProductController {
     @GetMapping("/update/{id}")
     public String showUpdateProductPage(@PathVariable Long id, Model model) {
         Optional<Product> productById = productService.findProductById(id);
-        if(productById.isPresent()) {
+        if (productById.isPresent()) {
             List<Category> categories = categoryService.findAll();
             model.addAttribute("product", productById.get());
             model.addAttribute("categories", categories);
@@ -70,8 +70,11 @@ public class ProductController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute Product product) {
-        productService.updateProduct(id, product);
+    public String updateProduct(@ModelAttribute Product product,
+                                @RequestParam Long categoryId) {
+        Optional<Category> category = categoryService.findCategoryById(categoryId);
+        category.ifPresent(product::setCategory);
+        productService.updateProduct(product);
         return "redirect:/products";
     }
 
@@ -88,10 +91,26 @@ public class ProductController {
         return "products";
     }
 
-    @GetMapping("/products/categories")
-    public String showProductCategories() {
-        return "categories";
+    @PostMapping("/addCategory")
+    public String addNewCategory(@RequestParam String categoryName) {
+        categoryService.addCategory(categoryName);
+        return "redirect:/products";
     }
 
+    @GetMapping("/categoryFilter")
+    public String getFilterByCategory(Model model, @RequestParam List<Long> categoryId) {
+        if (categoryId.isEmpty()) {
+            return "redirect:/products";
+        }
 
+        List<Category> categories = categoryService.findAll();
+        List<Product> products = new ArrayList<>();
+        for (int i = 0; i < categoryId.size(); i++) {
+            List<Product> productsByCategory = productService.findProductByCategoryId(categoryId.get(i));
+            products.addAll(productsByCategory);
+        }
+        model.addAttribute("categories", categories);
+        model.addAttribute("products", products);
+        return "products";
+    }
 }

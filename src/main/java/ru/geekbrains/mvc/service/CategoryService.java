@@ -10,7 +10,7 @@ public interface CategoryService {
 
     Optional<Category> findCategoryById(Long id);
 
-    Category addCategory(Category category);
+    boolean addCategory(String category);
 
     Category deleteCategory(Category category);
 }

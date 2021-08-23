@@ -44,4 +44,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     public boolean updateProduct(Product product) {
         return databaseConnection.update(product);
     }
+
+    @Override
+    public List<Product> findProductsByCategoryId(Long id) {
+        return databaseConnection.findProductsByCategoryId(id);
+    }
 }

@@ -25,7 +25,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public Optional<Category> findCategoryById(Long id) {
-        return Optional.empty();
+        return databaseConnection.findCategoryById(id);
     }
 
     @Override
@@ -36,5 +36,15 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     @Override
     public Category deleteCategory(Category category) {
         return null;
+    }
+
+    @Override
+    public Optional<Category> findCategoryByTitle(String category) {
+        return databaseConnection.findCategoryByTitle(category);
+    }
+
+    @Override
+    public boolean save(Category category) {
+        return databaseConnection.save(category);
     }
 }
