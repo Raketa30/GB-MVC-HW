@@ -28,15 +28,15 @@
                                            type="number">
                                 </div>
                                 <div class="col-md-4">
-                                    <select class="form-control" placeholder="Категория" th:name="category">
+                                    <select class="form-control" placeholder="Категория" th:name="categoryId">
                                         <option th:each="c : ${categories}" th:text="${c.title}"
-                                                th:value="${c.title}"></option>
+                                                th:value="${c.id}"></option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary" type="submit">Добавить</button>
+                            <button class="btn btn-primary" type="submit">Add product</button>
                         </div>
                     </div>
                 </form>
@@ -72,17 +72,47 @@
                 </table>
             </div>
             <div class="col-md-4">
-                <div class="ml-2">
-                    <form method="get" th:action="@{/findById}">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <input class="form-control" placeholder="Введите Id" th:name="id" type="text">
+                <div class="row">
+                    <div class="ml-2">
+                        <form th:action="@{/findById}" th:method="get">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <input class="form-control" placeholder="Введите Id" th:name="id" type="text">
+                                </div>
+                                <div class="col-md-auto">
+                                    <button class="btn btn-info" type="submit">Search</button>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-info" type="submit">Поиск</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="ml-2">
+                        <form th:action="@{/addCategory}" th:method="post">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <input class="form-control" placeholder="Add new category" th:name="categoryName"
+                                           type="text">
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-success" type="submit">Add</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="ml-2">
+                        <form th:action="@{/categoryFilter}" th:method="get">
+                            <div class="form-row" th:each="c : ${categories}">
+                                <input th:name="categoryId" th:value="${c.id}" type="checkbox">
+                                <label th:text="${c.title}"></label>
+                            </div>
+                            <div class="form-row mt-2">
+                                <button class="btn btn-success btn-block" type="submit">Filter</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

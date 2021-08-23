@@ -14,5 +14,7 @@ public interface ProductService {
 
     boolean deleteProduct(Long id);
 
-    boolean updateProduct(Long id, Product product);
+    boolean updateProduct(Product product);
+
+    List<Product> findProductByCategoryId(Long aLong);
 }

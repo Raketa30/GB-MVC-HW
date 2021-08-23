@@ -13,4 +13,8 @@ public interface CategoryRepository {
     Category addCategory(Category category);
 
     Category deleteCategory(Category category);
+
+    Optional<Category> findCategoryByTitle(String category);
+
+    boolean save(Category category);
 }

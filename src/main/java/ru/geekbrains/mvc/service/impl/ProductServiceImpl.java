@@ -40,12 +40,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean updateProduct(Long id, Product product) {
-        Optional<Product> productById = findProductById(id);
-        if (productById.isPresent()) {
-            product.setId(id);
-            return productRepository.updateProduct(product);
-        }
-        return false;
+    public boolean updateProduct(Product product) {
+        return productRepository.updateProduct(product);
+    }
+
+    @Override
+    public List<Product> findProductByCategoryId(Long id) {
+        return productRepository.findProductsByCategoryId(id);
     }
 }

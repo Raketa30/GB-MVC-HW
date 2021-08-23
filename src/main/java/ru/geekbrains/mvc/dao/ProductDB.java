@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import ru.geekbrains.mvc.domain.Product;
 
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +48,6 @@ public class ProductDB {
     public boolean save(Product product) {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
-            session.get(Product.class, 2L);
             tx = session.beginTransaction();
             session.save(product);
             tx.commit();
@@ -58,7 +58,6 @@ public class ProductDB {
     public boolean delete(Product product) {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
-            session.get(Product.class, 2L);
             tx = session.beginTransaction();
             session.delete(product);
             tx.commit();
@@ -69,11 +68,25 @@ public class ProductDB {
     public boolean update(Product product) {
         Transaction tx;
         try (Session session = sessionFactory.openSession()) {
-            session.get(Product.class, 2L);
             tx = session.beginTransaction();
             session.update(product);
             tx.commit();
             return true;
+        }
+    }
+
+    public List<Product> findProductsByCategoryId(Long categoryId) {
+        Transaction tx;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("SELECT p FROM Product p WHERE category.id = :category_id", Product.class);
+            query.setParameter("category_id", categoryId);
+            List<Product> result = query.getResultList();
+            List<Product> all = new ArrayList<>(result);
+            tx.commit();
+            return all;
+        } catch (Exception e) {
+            return Collections.emptyList();
         }
     }
 }
