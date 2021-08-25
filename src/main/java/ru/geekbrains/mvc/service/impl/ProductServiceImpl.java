@@ -30,18 +30,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean addProduct(Product product) {
-        return productRepository.save(product);
+    public void addProduct(Product product) {
+        productRepository.save(product);
     }
 
     @Override
-    public boolean deleteProduct(Long id) {
-        return productRepository.deleteProduct(id);
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
     }
 
     @Override
-    public boolean updateProduct(Product product) {
-        return productRepository.updateProduct(product);
+    public void updateProduct(Product product) {
+        productRepository.save(product);
     }
 
     @Override

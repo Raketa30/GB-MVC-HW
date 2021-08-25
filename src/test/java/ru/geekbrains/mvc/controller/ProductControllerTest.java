@@ -45,8 +45,6 @@ class ProductControllerTest extends MvcApplicationTests {
     @DisplayName("<-test add new product ->")
     void addNewProductShouldCreateNewProductInTheDatabase() {
         Product product = new Product("test2", 123);
-        when(productService.addProduct(product))
-                .thenReturn(true);
     }
 
     @Test
