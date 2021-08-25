@@ -10,11 +10,11 @@ public interface ProductService {
 
     Optional<Product> findProductById(Long id);
 
-    boolean addProduct(Product product);
+    void addProduct(Product product);
 
-    boolean deleteProduct(Long id);
+    void deleteProduct(Long id);
 
-    boolean updateProduct(Product product);
+    void updateProduct(Product product);
 
     List<Product> findProductByCategoryId(Long aLong);
 }
