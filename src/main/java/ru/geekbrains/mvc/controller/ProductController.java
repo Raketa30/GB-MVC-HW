@@ -8,6 +8,7 @@ import ru.geekbrains.mvc.domain.Category;
 import ru.geekbrains.mvc.domain.Product;
 import ru.geekbrains.mvc.service.CategoryService;
 import ru.geekbrains.mvc.service.ProductService;
+import ru.geekbrains.mvc.util.ProductUtil;
 
 import java.util.*;
 
@@ -98,19 +99,25 @@ public class ProductController {
     }
 
     @GetMapping("/categoryFilter")
-    public String getFilterByCategory(Model model, @RequestParam List<Long> categoryId) {
-        if (categoryId.isEmpty()) {
+    public String getFilterByCategory(@RequestParam(required = false) List<Long> categoryId,
+                                      @RequestParam(required = false) Integer minPrice,
+                                      @RequestParam(required = false) Integer maxPrice,
+                                      Model model) {
+        if (categoryId == null && minPrice == null && maxPrice == null) {
             return "redirect:/products";
         }
-
         List<Category> categories = categoryService.findAll();
         List<Product> products = new ArrayList<>();
-        for (int i = 0; i < categoryId.size(); i++) {
-            List<Product> productsByCategory = productService.findProductByCategoryId(categoryId.get(i));
-            products.addAll(productsByCategory);
+        if (categoryId == null) {
+            products.addAll(productService.findAll());
+        } else {
+            for (Long id : categoryId) {
+                List<Product> productsByCategory = productService.findProductByCategoryId(id);
+                products.addAll(productsByCategory);
+            }
         }
         model.addAttribute("categories", categories);
-        model.addAttribute("products", products);
+        model.addAttribute("products", ProductUtil.getFilteredProducts(products, minPrice, maxPrice));
         return "products";
     }
 }
