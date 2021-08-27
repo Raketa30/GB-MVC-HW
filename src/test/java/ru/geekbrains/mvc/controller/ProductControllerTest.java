@@ -28,7 +28,7 @@ class ProductControllerTest extends MvcApplicationTests {
     @BeforeEach
     void setUp() {
         Product product = new Product("test", 123);
-        when(productService.findAll())
+        when(productService.findAllProducts())
                 .thenReturn(Collections.singletonList(product));
     }
 
@@ -38,7 +38,7 @@ class ProductControllerTest extends MvcApplicationTests {
         mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("products"))
-                .andExpect(model().attribute("products", productService.findAll()));
+                .andExpect(model().attribute("products", productService.findAllProducts()));
     }
 
     @Test
