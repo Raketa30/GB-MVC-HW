@@ -1,3 +1,4 @@
+
 package ru.geekbrains.mvc;
 
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @AutoConfigureMockMvc
 public class MvcApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }

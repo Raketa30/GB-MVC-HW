@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+<body>
+<div class="container m-4 p-4">
+    <h2>Update product <span th:text="${product.title}"></span></h2>
+    <div class="row d-flex">
+        <form class="mt-2 mb-2" method="post" th:action="@{/update/{id}(id = ${product.id})}" th:object="${product}">
+            <div class="row">
+                <div class="col-md-3">
+                    <input class="form-control" placeholder="Имя" th:field="*{title}" th:value="${product.title}"
+                           type="text">
+                </div>
+                <div class="col-md-3">
+                    <input class="form-control" placeholder="Цена" th:field="*{cost}" th:value="${product.cost}"
+                           type="number">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" placeholder="Категория" th:name="categoryId">
+                        <option th:each="c : ${categories}" th:selected="(${c.id} == *{category.id})"
+                                th:text="${c.title}"
+                                th:value="${c.id}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Обновить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
