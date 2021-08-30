@@ -7,63 +7,123 @@
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 </head>
 <body>
-<div class="container m-4 p-4">
-    <h2>Продукты</h2>
-    <div class="row">
-        <div class="col-md-8">
-            <form class="mt-2 mb-2" method="post" th:action="@{/add}">
-                <div class="row">
-                    <div class="col-md-5">
-                        <input class="form-control" placeholder="Имя" th:name="title" type="text">
-                    </div>
-                    <div class="col-md-5">
-                        <input class="form-control" maxlength="5" placeholder="Цена" th:name="cost" type="number">
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary" type="submit">Добавить</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-4">
-            <form class="mt-2 mb-2" method="get" th:action="@{/findById}">
-                <div class="row">
-                    <div class="col-md-8">
-                        <input class="form-control" placeholder="Введите Id" th:name="id" type="text">
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-info" type="submit">Поиск</button>
-                    </div>
-                </div>
-            </form>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-2 mt-2">
+            <h2>Products</h2>
         </div>
     </div>
-
-
-    <table class="table">
-        <thead class="table-info">
-        <tr>
-            <th>ID</th>
-            <th>Наименование</th>
-            <th>Стоимость</th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="p : ${products}" class="align-middle">
-            <td th:text="${p.id}"></td>
-            <td th:text="${p.title}"></td>
-            <td th:text="${p.cost}"></td>
-            <td>
-                <a class="btn btn-outline-danger" th:href="@{/delete/{id}(id=${p.id})}">Delete</a>
-            <td>
-                <a class="btn btn-outline-info" th:href="@{/update/{id}(id=${p.id})}">Update</a>
-            </td>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="row d-flex justify-content-between">
+        <div class="row mb-2 mt-2">
+            <div class="col-md-8">
+                <form class="m-0 p-0" method="post" th:action="@{/add} ">
+                    <div class="row justify-content-between">
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input class="form-control" placeholder="Имя" th:name="title" type="text">
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control" maxlength="5" placeholder="Цена" th:name="cost"
+                                           type="number">
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" placeholder="Категория" th:name="categoryId">
+                                        <option th:each="c : ${categories}" th:text="${c.title}"
+                                                th:value="${c.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" type="submit">Add product</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table">
+                    <thead class="table-info">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="align-middle" th:each="p : ${products}">
+                        <td th:text="${p.id}"></td>
+                        <td th:text="${p.title}"></td>
+                        <td th:text="${p.cost}"></td>
+                        <td th:text="${p.category.title}"></td>
+                        <td>
+                            <a class="btn btn-outline-danger" th:href="@{/delete/{id}(id=${p.id})}">Delete</a>
+                        <td>
+                            <a class="btn btn-outline-info" th:href="@{/update/{id}(id=${p.id})}">Update</a>
+                        </td>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="ml-2">
+                        <form th:action="@{/findById}" th:method="get">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <input class="form-control" placeholder="Введите Id" th:name="id" type="text">
+                                </div>
+                                <div class="col-md-auto">
+                                    <button class="btn btn-info" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="ml-2">
+                        <form th:action="@{/addCategory}" th:method="post">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <input class="form-control" placeholder="Add new category" th:name="categoryName"
+                                           type="text">
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-success" type="submit">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="ml-2">
+                        <form th:action="@{/categoryFilter}" th:method="get">
+                            <div class="form-row" th:each="c : ${categories}">
+                                <input th:name="categoryId" th:value="${c.id}" type="checkbox">
+                                <label th:text="${c.title}"></label>
+                            </div>
+                            <div class="form-row mt-3">
+                                <input placeholder="Min price" th:name="minPrice" type="number">
+                                <input placeholder="Max price" th:name="maxPrice" type="number">
+                            </div>
+                            <div class="form-row mt-3">
+                                <input placeholder="Product name" th:name="productName" type="text">
+                            </div>
+                            <div class="form-row mt-2">
+                                <button class="btn btn-success btn-block" type="submit">Filter</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
