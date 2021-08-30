@@ -29,7 +29,7 @@ class ProductServiceImplTest extends MvcApplicationTests {
     @DisplayName("<-test saving product->")
     void shouldSavedProductSuccessfully() {
         Product product = new Product("test", 1);
-        when(repository.save(product)).thenReturn(true);
+        when(repository.save(product)).thenReturn(product);
         service.addProduct(product);
         verify(repository).save(product);
     }
@@ -37,19 +37,20 @@ class ProductServiceImplTest extends MvcApplicationTests {
     @Test
     @DisplayName("<-test deleting product->")
     void shouldDeleteProductSuccessfully() {
-        when(repository.deleteProduct(1)).thenReturn(true);
-        service.deleteProduct(1);
-        verify(repository).deleteProduct(1);
+//        Product product = new Product(1L, "test", 1);
+//        when(repository.deleteById(1L)).thenReturn(product);
+//        service.deleteProduct(product);
+//        verify(repository).delete(1);
     }
 
     @Test
     @DisplayName("<-test finding product by id->")
     void shouldFindProductByIdSuccessfully() {
         Product product = new Product("test", 1);
-        when(repository.findProductById(1)).thenReturn(Optional.of(product));
-        Optional<Product> found = service.findProductById(1);
+        when(repository.findProductById(1L)).thenReturn(Optional.of(product));
+        Optional<Product> found = service.findProductById(1L);
         assertThat(found.get()).isNotNull();
-        verify(repository).findProductById(1);
+        verify(repository).findProductById(1L);
     }
 
     @Test
@@ -57,7 +58,7 @@ class ProductServiceImplTest extends MvcApplicationTests {
     void shouldFindALlProducts() {
         Product product = new Product("test", 1);
         when(repository.findAll()).thenReturn(Collections.singletonList(product));
-        List<Product> found = service.findAll();
+        List<Product> found = service.findAllProducts();
         assertThat(found).isNotNull();
         verify(repository).findAll();
     }
