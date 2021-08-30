@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.mvc.domain.Category;
 import ru.geekbrains.mvc.domain.Product;
-import ru.geekbrains.mvc.service.CategoryService;
 import ru.geekbrains.mvc.service.ProductService;
 
 import java.util.*;
@@ -15,12 +14,10 @@ import java.util.*;
 @RequestMapping("/")
 public class ProductController {
     private final ProductService productService;
-    private final CategoryService categoryService;
 
     @Autowired
-    public ProductController(ProductService productService, CategoryService categoryService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.categoryService = categoryService;
     }
 
     @GetMapping
@@ -30,8 +27,8 @@ public class ProductController {
 
     @GetMapping("/products")
     public String showProductsPage(Model model) {
-        List<Product> products = productService.findAll();
-        List<Category> categories = categoryService.findAll();
+        List<Product> products = productService.findAllProducts();
+        List<Category> categories = productService.findAllCategories();
         Collections.sort(products, Comparator.comparingLong(Product::getId));
         model.addAttribute("products", products);
         model.addAttribute("categories", categories);
@@ -42,7 +39,7 @@ public class ProductController {
     public String addProduct(@RequestParam String title,
                              @RequestParam String cost,
                              @RequestParam Long categoryId) {
-        Optional<Category> category = categoryService.findCategoryById(categoryId);
+        Optional<Category> category = productService.findCategoryById(categoryId);
         if (category.isPresent()) {
             Product product = new Product(title, Integer.parseInt(cost));
             product.setCategory(category.get());
@@ -61,7 +58,7 @@ public class ProductController {
     public String showUpdateProductPage(@PathVariable Long id, Model model) {
         Optional<Product> productById = productService.findProductById(id);
         if (productById.isPresent()) {
-            List<Category> categories = categoryService.findAll();
+            List<Category> categories = productService.findAllCategories();
             model.addAttribute("product", productById.get());
             model.addAttribute("categories", categories);
             return "product_update";
@@ -72,7 +69,7 @@ public class ProductController {
     @PostMapping("/update/{id}")
     public String updateProduct(@ModelAttribute Product product,
                                 @RequestParam Long categoryId) {
-        Optional<Category> category = categoryService.findCategoryById(categoryId);
+        Optional<Category> category = productService.findCategoryById(categoryId);
         category.ifPresent(product::setCategory);
         productService.updateProduct(product);
         return "redirect:/products";
@@ -81,7 +78,7 @@ public class ProductController {
     @GetMapping("/findById")
     public String filterById(@RequestParam String id, Model model) {
         Optional<Product> productById = productService.findProductById(Long.parseLong(id));
-        List<Category> categories = categoryService.findAll();
+        List<Category> categories = productService.findAllCategories();
         model.addAttribute("categories", categories);
         if (productById.isPresent()) {
             model.addAttribute("products", Collections.singletonList(productById.get()));
@@ -93,22 +90,28 @@ public class ProductController {
 
     @PostMapping("/addCategory")
     public String addNewCategory(@RequestParam String categoryName) {
-        categoryService.addCategory(categoryName);
+        productService.addCategory(categoryName);
         return "redirect:/products";
     }
 
     @GetMapping("/categoryFilter")
-    public String getFilterByCategory(Model model, @RequestParam List<Long> categoryId) {
-        if (categoryId.isEmpty()) {
+    public String getFilterByCategory(@RequestParam(required = false) List<Long> categoryId,
+                                      @RequestParam(required = false) String productName,
+                                      @RequestParam(required = false) Integer minPrice,
+                                      @RequestParam(required = false) Integer maxPrice,
+                                      Model model) {
+        if (Objects.isNull(categoryId)
+                && Objects.isNull(minPrice)
+                && Objects.isNull(maxPrice)
+                && Objects.isNull(productName)
+        ) {
             return "redirect:/products";
         }
 
-        List<Category> categories = categoryService.findAll();
-        List<Product> products = new ArrayList<>();
-        for (int i = 0; i < categoryId.size(); i++) {
-            List<Product> productsByCategory = productService.findProductByCategoryId(categoryId.get(i));
-            products.addAll(productsByCategory);
-        }
+        List<Category> categories = productService.findAllCategories();
+        List<Product> products = productService.getProductsUsingFilters(categoryId, productName, minPrice, maxPrice);
+        Collections.sort(products, Comparator.comparingLong(Product::getId));
+
         model.addAttribute("categories", categories);
         model.addAttribute("products", products);
         return "products";
